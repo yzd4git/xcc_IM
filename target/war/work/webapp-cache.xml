@@ -4,6 +4,7 @@
       <string>currentBuild</string>
       <path-set>
         <pathsSet class="linked-hash-set">
+          <string>WEB-INF/classes/.gitignore</string>
           <string>WEB-INF/classes/applicationContext.xml</string>
           <string>WEB-INF/classes/com/zdh/back/App.class</string>
           <string>WEB-INF/classes/com/zdh/back/dao/FeedBackDao.class</string>
@@ -66,6 +67,11 @@
           <string>WEB-INF/classes/jdbc.properties</string>
           <string>WEB-INF/classes/log4j.properties</string>
           <string>WEB-INF/classes/redis.properties</string>
+          <string>WEB-INF/classes/xcc_IM/excel/CreateSimpleExcelToDisk.class</string>
+          <string>WEB-INF/classes/xcc_IM/excel/Student.class</string>
+          <string>WEB-INF/classes/xcc_IM/Test6.class</string>
+          <string>WEB-INF/classes/xcc_IM/TestJson.class</string>
+          <string>WEB-INF/classes/xcc_IM/TestLog.class</string>
           <string>WEB-INF/lib/spring-webmvc-4.2.4.RELEASE.jar</string>
           <string>WEB-INF/lib/spring-beans-4.2.4.RELEASE.jar</string>
           <string>WEB-INF/lib/spring-context-4.2.4.RELEASE.jar</string>
@@ -117,10 +123,12 @@
           <string>WEB-INF/lib/ezmorph-1.0.6.jar</string>
           <string>WEB-INF/lib/jersey-spring-1.8.jar</string>
           <string>WEB-INF/lib/pinyin4j-2.5.0.jar</string>
-          <string>WEB-INF/lib/qiniu-java-sdk-7.0.9.jar</string>
+          <string>WEB-INF/lib/qiniu-java-sdk-7.0.10.jar</string>
           <string>WEB-INF/lib/gson-2.3.1.jar</string>
           <string>WEB-INF/lib/okhttp-2.7.1.jar</string>
           <string>WEB-INF/lib/okio-1.6.0.jar</string>
+          <string>WEB-INF/lib/poi-3.9.jar</string>
+          <string>WEB-INF/lib/commons-codec-1.5.jar</string>
           <string>WEB-INF/lib/spring-data-redis-1.6.2.RELEASE.jar</string>
           <string>WEB-INF/lib/spring-context-support-4.1.9.RELEASE.jar</string>
           <string>WEB-INF/lib/spring-aop-4.1.9.RELEASE.jar</string>
@@ -131,7 +139,6 @@
           <string>WEB-INF/lib/json-20090211.jar</string>
           <string>WEB-INF/lib/httpclient-4.3.5.jar</string>
           <string>WEB-INF/lib/httpcore-4.3.2.jar</string>
-          <string>WEB-INF/lib/commons-codec-1.6.jar</string>
         </pathsSet>
       </path-set>
     </entry>

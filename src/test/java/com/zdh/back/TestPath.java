@@ -4,7 +4,11 @@ public class TestPath {
 
 	
 	public static void main(String[] args) {
-		path();
+
+		String a =  new String("abc") ;
+		String b =  new String("abc") ;
+		System.out.println(a==b);
+//		path();
 	}
 	
 	

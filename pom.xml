@@ -214,6 +214,12 @@
 			<version>[7.0.0, 7.0.99]</version>
 		</dependency>
 
+	<!-- poi 导出excel -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.9</version>
+		</dependency>
 
 
 		<!-- jedis配置 -->

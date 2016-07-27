@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -66,8 +67,56 @@ public class RemoteRestfulServiceImpl implements IRemoteRestfulService {
 	@Autowired
 	private HttpServletRequest request;
 	
+	@Path("isRegister")
+	@POST 
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Override
+	public String isRegister(String Info) throws UnsupportedEncodingException {
+		JSONObject obj = new JSONObject();
+		JSONObject fromObject = JSON.parseObject(Info);
+		JSONArray json = JSON.parseArray(Base64Util.decode(fromObject.getString("data")));
+		
+		if (null !=json && !json.isEmpty()) {
+			String str = "";	
+			for (int i = 0; i < json.size(); i++) {
+				try {
+					str = str + " '" + json.getJSONObject(i).getString("phone") + "'" + ",";
+				} catch (Exception e){
+					obj.put("success", "2");//系统发生未知的错误
+				}
+			}
+			String phoneStr = str.substring(0, str.length() - 1);
+			StringBuffer selectSql = new StringBuffer();
+			selectSql.append("SELECT `phone` FROM `t_app_user_info` WHERE `phone` IN(")
+					 .append(phoneStr).append(") ");
+			List<Map<String, Object>> list = userDao.queryForMapListBySql(selectSql.toString());
+			List<String> phones = new ArrayList<>();
+			for (Map<String, Object> map : list) {
+				phones.add((String) map.get("phone"));
+			}
+			if(null != list && !list.isEmpty()){
+				obj.put("success", "1");
+				obj.put("phones", phones);
+			} else {
+				obj.put("success", "2");
+			}
+			
+		} else {
+			obj.put("success", "2");//为空
+		}
+		
+		String data = Base64Util.encode(obj.toString());
+		obj.clear();
+		obj.put("data", data);
+		return obj.toString();
+	}
 	
-	
+	/**
+	 * 获取群组头像
+	 * @param Info
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
 	@Path("backInfo")
 	@POST 
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -91,20 +140,20 @@ public class RemoteRestfulServiceImpl implements IRemoteRestfulService {
 		JSONObject array = new JSONObject();
 		List<Map<String, Object>> UList = new ArrayList<>();
 		List<Map<String, Object>> Glist  = new ArrayList<>(); 
-		if(!TextUtils.isEmpty(UidStr)){
+		if(null != UidStr && !TextUtils.isEmpty(UidStr)){
 			UidStr = UidStr.substring(0,UidStr.length() - 1);
 			StringBuffer Usql = new StringBuffer();
-			Usql.append("  SELECT id,IFNULL(nickname,'')nickname,phone,IFNULL(head_sculpture,'')headSculpture,IFNULL(sex,'')sex,IFNULL(age,'')age,IFNULL(birthday,'')birthday , pinyin , im_username imUsername FROM t_app_user_info where im_username in(")
+			Usql.append("  SELECT id uuid,IFNULL(nickname,'')nickname,phone,IFNULL(head_sculpture,'')headSculpture,IFNULL(sex,'')sex,IFNULL(age,'')age,IFNULL(birthday,'')birthday , pinyin , im_username imUsername FROM t_app_user_info where im_username in(")
 				.append(UidStr).append(" )");
 			UList.addAll(userDao.queryForMapListBySql(Usql.toString()));
 			array.put("UList", UList);
 		} else {
 				array.put("UList", UList);
 		}
-		if(!TextUtils.isEmpty(GidStr)){
+		if(null != GidStr && !TextUtils.isEmpty(GidStr)){
 			GidStr = GidStr.substring(0,GidStr.length() - 1);
 			StringBuffer Gsql = new StringBuffer();
-			Gsql.append(" SELECT id ,IFNULL(img_path,'') imgPath FROM t_group_img WHERE id IN(").append(GidStr).append(") ");
+			Gsql.append(" SELECT id groupId ,IFNULL(img_path,'') imgPath FROM t_group_img WHERE id IN(").append(GidStr).append(") ");
 					Glist.addAll(userDao.queryForMapListBySql(Gsql.toString()));
 			array.put("GList", Glist);
 		} else {
@@ -128,9 +177,9 @@ public class RemoteRestfulServiceImpl implements IRemoteRestfulService {
 		JSONObject obj = new JSONObject();
 		String groupId = inf.getString("groupId");
 		StringBuffer sql = new StringBuffer();//查看群组头像
-		sql.append(" SELECT id ,IFNULL(img_path,'') imgPath FROM t_group_img WHERE id = '").append(groupId).append("' ");
+		sql.append(" SELECT id groupId ,IFNULL(img_path,'') imgPath FROM t_group_img WHERE id = '").append(groupId).append("' ");
 		List<Map<String,Object>> groups = userDao.queryForMapListBySql(sql.toString());
-		if(groups.isEmpty()) {
+		if(null == groups && groups.isEmpty()) {
 			obj.put("success", "2");
 		} else if (groups.size() == 1){
 			obj.put("group", groups.get(0));
@@ -165,7 +214,7 @@ public class RemoteRestfulServiceImpl implements IRemoteRestfulService {
 			}
 			String idStr = str.substring(0, str.length() - 1);
 			StringBuffer sql = new StringBuffer();//查看群组头像
-			sql.append(" SELECT id ,IFNULL(img_path,'') imgPath FROM t_group_img WHERE id IN(").append(idStr).append(") ");
+			sql.append(" SELECT id groupId ,IFNULL(img_path,'') imgPath FROM t_group_img WHERE id IN(").append(idStr).append(") ");
 			List<Map<String, Object>> list = userDao.queryForMapListBySql(sql.toString());
 			if(null != list){
 				obj.put("success", "1");
@@ -282,38 +331,43 @@ public class RemoteRestfulServiceImpl implements IRemoteRestfulService {
 		String id = inf.getString("id");
 		StringBuffer selectSql = new StringBuffer();
 		selectSql.append(" SELECT number_passwd , passwd_hash from t_app_user_info WHERE id = '").append(id).append("' ");
-		AppUserInfo user = userDao.queryForSql(AppUserInfo.class, selectSql.toString());
-		if(TextUtils.isEmpty(user.getNumberPasswd())){
-			StringBuffer sql = new StringBuffer();
-			sql.append(" UPDATE t_app_user_info SET number_passwd='").append(numberPasswd)
+		List<AppUserInfo> list = userDao.findAllBySql(AppUserInfo.class, selectSql.toString());
+		if(null != list && !list.isEmpty()){
+			if(TextUtils.isEmpty(list.get(0).getNumberPasswd())){
+				StringBuffer sql = new StringBuffer();
+				sql.append(" UPDATE t_app_user_info SET number_passwd='").append(numberPasswd)
 				.append("' WHERE id = '").append(id).append("' ");
-			
-			int state = userDao.executeBySql(sql.toString());
-			if(state >0){
-				obj.put("success", "1");//添加键盘密码成功
+				
+				int state = userDao.executeBySql(sql.toString());
+				if(state >0){
+					obj.put("success", "1");//添加键盘密码成功
+				} else {
+					obj.put("success", "3");//设置失败
+				}
 			} else {
-				obj.put("success", "3");//设置失败
+				try {
+					String passwdHash = MD5Util.md5Encode(inf.getString("passwdHash"));
+					StringBuffer sql = new StringBuffer();
+					if(passwdHash.equals(list.get(0).getPasswdHash())){
+						StringBuffer updateSql = new StringBuffer();
+						updateSql.append(" UPDATE t_app_user_info SET number_passwd = '").append(numberPasswd).append("' WHERE id = '").append(id).append("' ");
+						int state = userDao.executeBySql(updateSql.toString());
+						if(state > 0){
+							obj.put("success", "2");//密码修改成功
+						} else {
+							obj.put("success", "3");//设置失败
+						}
+					} else {	
+						obj.put("success", "4");//密码不正确，咱不允许修改
+					}
+				} catch (Exception e) {
+					obj.put("success", "3");//系统发生未知的错误
+				}
 			}
 		} else {
-			try {
-				String passwdHash = MD5Util.md5Encode(inf.getString("passwdHash"));
-				StringBuffer sql = new StringBuffer();
-				if(passwdHash.equals(user.getPasswdHash())){
-					StringBuffer updateSql = new StringBuffer();
-					updateSql.append(" UPDATE t_app_user_info SET number_passwd = '").append(numberPasswd).append("' WHERE id = '").append(id).append("' ");
-					int state = userDao.executeBySql(updateSql.toString());
-					if(state > 0){
-						obj.put("success", "2");//密码修改成功
-					} else {
-						obj.put("success", "3");//设置失败
-					}
-				} else {	
-					obj.put("success", "4");//密码不正确，咱不允许修改
-				}
-			} catch (Exception e) {
-				obj.put("success", "3");//系统发生未知的错误
-			}
+			obj.put("success", "3");
 		}
+		
 		
 		String data = Base64Util.encode(obj.toString());
 		obj.clear();
@@ -336,12 +390,13 @@ public class RemoteRestfulServiceImpl implements IRemoteRestfulService {
 		String phone = inf.getString("phone");
 		StringBuffer sql = new StringBuffer();
 		sql.append(" SELECT number_passwd from t_app_user_info where phone = ").append(phone);
-		AppUserInfo user = userDao.queryForSql(AppUserInfo.class, sql.toString());
-		if(null != user.getNumberPasswd()){
-			obj.put("numberPasswd", user.getNumberPasswd());
+		List<AppUserInfo> list = userDao.findAllBySql(AppUserInfo.class, sql.toString());
+		if(null != list && !list.isEmpty()){
+			obj.put("numberPasswd", list.get(0).getNumberPasswd());
 		} else {
 			obj.put("numberPasswd", "");
 		}
+		
 		String data = Base64Util.encode(obj.toString());
 		obj.clear();
 		obj.put("data", data);
@@ -491,7 +546,7 @@ public class RemoteRestfulServiceImpl implements IRemoteRestfulService {
 			selectSql.append(" SELECT IFNULL(head_sculpture,'')headSculpture ,IFNULL(nickname,'')nickname ,IFNULL(sex,'')sex ,IFNULL(birthday,'')birthday ,IFNULL(age,'')age ,IFNULL(number_passwd ,'')numberPasswd ,phone FROM t_app_user_info WHERE id = '")
 			   .append(id).append("' ");
 			List<Map<String, Object>> users = userDao.queryForMapListBySql(selectSql.toString());
-			if(users.isEmpty()){
+			if(null == users && users.isEmpty()){
 				obj.put("success", "2");//空
 			} else if (users.size() == 1){
 				obj.put("user", users.get(0));
@@ -672,7 +727,7 @@ public class RemoteRestfulServiceImpl implements IRemoteRestfulService {
 		map.put("id", id);
 		AppUserInfo user = userDao.findByProperty(AppUserInfo.class, map);
 		
-		if(!user.getPrivacyProblem().isEmpty()) {
+		if(null != user && !user.getPrivacyProblem().isEmpty()) {
 			if(user.getPrivacyProblem().equals(oldQuestion) && user.getSecretAnswer().equals(oldAnswer)) {
 				StringBuffer updateSql = new StringBuffer();
 				//UPDATE t_app_user_info SET privacy_problem = '测试问题',secret_answer='答案测试' WHERE id ='2412'
@@ -845,17 +900,18 @@ public class RemoteRestfulServiceImpl implements IRemoteRestfulService {
 		JSONObject inf = JSONObject.parseObject(Base64Util.decode(infParam));
 		String imUserName = inf.getString("im_username");
 		StringBuffer selectSql = new StringBuffer();
-		selectSql.append(" SELECT id,IFNULL(nickname,'')nickname,phone,IFNULL(head_sculpture,'')headSculpture,IFNULL(sex,'')sex,IFNULL(age,'')age,IFNULL(birthday,'')birthday , pinyin , im_username imUsername FROM t_app_user_info where im_username = '")
+		selectSql.append(" SELECT id uuid,IFNULL(nickname,'')nickname,phone,IFNULL(head_sculpture,'')headSculpture,IFNULL(sex,'')sex,IFNULL(age,'')age,IFNULL(birthday,'')birthday , pinyin , im_username imUsername FROM t_app_user_info where im_username = '")
 		 .append(imUserName).append("'");
-		
-//		List<Map<String,Object>> list = userDao.queryForMapListBySql(selectSql.toString());
-		AppUserInfo user = userDao.queryForSql(AppUserInfo.class, selectSql.toString());
-		if(null != user){
+		List<Map<String, Object>> list = userDao.queryForMapListBySql(selectSql.toString());
+		if(null == list && list.isEmpty()){
+			obj.put("success", "2");//为空
+		} else if(list.size() == 1){
 			obj.put("success", "1");
-			obj.put("friend", user);
+			obj.put("friend", list.get(0));
 		} else {
 			obj.put("success", "2");
 		}
+		
 		String data = Base64Util.encode(obj.toString());
 		obj.clear();
 		obj.put("data", data);
@@ -888,7 +944,7 @@ public class RemoteRestfulServiceImpl implements IRemoteRestfulService {
 			String idStr = str.substring(0, str.length() - 1);
 			StringBuffer selectSql = new StringBuffer();
 			//SELECT id,nickname,phone,head_sculpture,sex,age,birthday FROM t_app_user_info where im_username='bb6a80ef2eeadfa96a0a94b0cda5b4f9'
-			selectSql.append(" SELECT id,IFNULL(nickname,'')nickname,phone,IFNULL(head_sculpture,'')headSculpture,IFNULL(sex,'')sex,IFNULL(age,'')age,IFNULL(birthday,'')birthday , pinyin , im_username imUsername FROM t_app_user_info where im_username in(")
+			selectSql.append(" SELECT id uuid,IFNULL(nickname,'')nickname,phone,IFNULL(head_sculpture,'')headSculpture,IFNULL(sex,'')sex,IFNULL(age,'')age,IFNULL(birthday,'')birthday , pinyin , im_username imUsername FROM t_app_user_info where im_username in(")
 					 .append(idStr).append(") ");
 //			selectSql.append(" SELECT id,IFNULL(nickname,'\"\"')nickname,phone,IFNULL(head_sculpture,'\"\"')head_sculpture,IFNULL(sex,'\"\"')sex,IFNULL(birthday,'\"\"')birthday FROM t_app_user_info where im_username in(")
 //					 .append(idStr).append(") ");
@@ -1046,7 +1102,7 @@ public class RemoteRestfulServiceImpl implements IRemoteRestfulService {
 			}
 			
 			List<Map<String, Object>> friends = userDao.queryForMapListBySql(sql.toString());
-			if(!friends.isEmpty()){	
+			if(null != friends && !friends.isEmpty()){	
 				obj.put("success", "1");//获取成功
 				obj.put("users", friends);
 			} else {
@@ -1270,7 +1326,7 @@ public class RemoteRestfulServiceImpl implements IRemoteRestfulService {
 										 .append(phone);
 					userDao.executeBySql(updateTime.toString());//修改最后一次登录的时间
 					obj.put("success", "1");// 登录成功
-					obj.put("id", findUser.getId());
+					obj.put("uuid", findUser.getId());
 				} else {
 					obj.put("success", "2");// 登录失败
 				}
@@ -1392,6 +1448,7 @@ public class RemoteRestfulServiceImpl implements IRemoteRestfulService {
 	public void setUserDao(IUserDao userDao) {
 		this.userDao = userDao;
 	}
+
 
 
 	/********************* 头像上传《运用七牛云存储》 ************************/

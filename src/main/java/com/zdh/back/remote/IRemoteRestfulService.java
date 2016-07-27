@@ -15,6 +15,13 @@ public interface IRemoteRestfulService {
 	
 	
 	/**
+	 * 查看手机通讯录的所有人是否注册
+	 * @param Info
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	public String isRegister(String Info)throws UnsupportedEncodingException;
+	/**
 	 * 返回给APP端信息，包括个人资料，群组头像
 	 * @param Info 
 	 * @return

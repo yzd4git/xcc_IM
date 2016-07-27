@@ -12,8 +12,8 @@ public class TestJson {
 //        jsonArray.put(jo1);
 //		String json ="[{\"id\":\"111\"},{\"id\":\"222\"},{\"id\":\"999\"}]";
 		
-		
-	testJson01();
+		String a = "a" ;String b = "a";String c="ab";String d = a+b ;
+//	testJson01();
 //		testJson02();
 		
 	}

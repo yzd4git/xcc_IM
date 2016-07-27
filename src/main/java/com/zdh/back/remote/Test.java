@@ -2,6 +2,8 @@ package com.zdh.back.remote;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -39,9 +41,14 @@ public class Test {
 		 //testHUXINToken() ;
 //		testHUXINRegister();
 		//testJPUSH() ;
-		
+//		updateNumberPasswd();	
+//		GetSalt();
+//		getFriend();
+//		getNumberPasswd();
 //		testGetGroupImg();
-		testFind1();
+//		testFind1();
+//		System.out.println(checkEmail("luoyj@136.cn"));
+		testIsRegiest();
 	}
 
 	private static URI getBaseURI() {
@@ -509,6 +516,125 @@ public class Test {
 		System.out.println(result);
 	}
 	
+	public static void updateNumberPasswd(){
+		Client client = Client.create();
+		URI u = null;
+		try {
+			u = new URI("http://localhost:8080/xcc_IM/rest/remoteApi/updateNumberPasswd");
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		System.out.println(u);
+		WebResource resource = client.resource(u);
+		MultivaluedMapImpl params = new MultivaluedMapImpl();
+		JSONObject json = new JSONObject();
+		json.put("id", "13131");
+		json.put("passwdHash", "1231321");
+		json.put("numberPasswd", "1231321");
+		JSONObject obj = new JSONObject();
+		obj.put("data", Base64Util.encode(json.toString()));
+		String result = resource.type(MediaType.APPLICATION_JSON).post(
+				String.class, obj.toString());
+		System.out.println(result);
+	}
 	
+	public static void GetSalt(){
+		Client client = Client.create();
+		URI u = null;
+		try {
+			u = new URI("http://localhost:8080/xcc_IM/rest/remoteApi/gainInfo");
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		System.out.println(u);
+		WebResource resource = client.resource(u);
+		MultivaluedMapImpl params = new MultivaluedMapImpl();
+		JSONObject json = new JSONObject();
+		json.put("id", "9e2867afd057427eb51551dc28de9d");
+		JSONObject obj = new JSONObject();
+		obj.put("data", Base64Util.encode(json.toString()));
+		String result = resource.type(MediaType.APPLICATION_JSON).post(
+				String.class, obj.toString());
+		System.out.println(result);
+	}
+	
+	public static void getFriend(){
+		Client client = Client.create();
+		URI u = null;
+		try {
+			u = new URI("http://localhost:8080/xcc_IM/rest/remoteApi/getFriend");
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		System.out.println(u);
+		WebResource resource = client.resource(u);
+		MultivaluedMapImpl params = new MultivaluedMapImpl();
+		JSONObject json = new JSONObject();
+		json.put("im_username", "13131");
+		JSONObject obj = new JSONObject();
+		obj.put("data", Base64Util.encode(json.toString()));
+		String result = resource.type(MediaType.APPLICATION_JSON).post(
+				String.class, obj.toString());
+		System.out.println(result);
+	}
+	public static void getNumberPasswd(){
+		Client client = Client.create();
+		URI u = null;
+		try {
+			u = new URI("http://localhost:8080/xcc_IM/rest/remoteApi/getNumberPasswd");
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		System.out.println(u);
+		WebResource resource = client.resource(u);
+		MultivaluedMapImpl params = new MultivaluedMapImpl();
+		JSONObject json = new JSONObject();
+		json.put("phone", "13913476956");
+		JSONObject obj = new JSONObject();
+		obj.put("data", Base64Util.encode(json.toString()));
+		String result = resource.type(MediaType.APPLICATION_JSON).post(
+				String.class, obj.toString());
+		System.out.println(result);
+	}
+	
+	public static boolean checkEmail(String account){
+		String regex = "^[A-Za-z0-9]+([-_.][A-Za-z0-9]+)*@([A-Za-z0-9]+[_.])+[A-Za-z0-9]{2,5}$" ;
+		Pattern p1 = Pattern.compile(regex);
+		Matcher m1 = p1.matcher(account); 
+		return m1.matches(); 
+	}
+	
+	
+	public static void testIsRegiest() {
+		Client client = Client.create();
+		URI u = null;
+		try {
+			u = new URI("http://localhost:8080/xcc_IM/rest/remoteApi/isRegister");
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		System.out.println(u);
+		WebResource resource = client.resource(u);
+		MultivaluedMapImpl params = new MultivaluedMapImpl();
+		JSONArray array =  new JSONArray();
+		JSONObject j1 = new JSONObject();
+		j1.put("phone", "18510195274");
+		JSONObject j2 = new JSONObject();
+		j2.put("phone", "13120215658");
+		
+		array.add(j1);
+		array.add(j2);
+		System.out.println(array);
+//		JSONObject json = new JSONObject();
+//		JSONObject j1 = new JSONObject();
+//		j1.put("phone", "13913476956");
+//		json.put("phone", "18510195274");
+		
+		JSONObject obj = new JSONObject();
+		obj.put("data", Base64Util.encode(array.toString()));
+		String result = resource.type(MediaType.APPLICATION_JSON).post(
+				String.class, obj.toString());
+		System.out.println(result);
+	}
 	
 }
