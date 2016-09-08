@@ -279,7 +279,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 		if (profix.startsWith("System")) {
 			profix = "" ;
 		} else {
-			profix = "t_" ;
+			profix = "t" ;
 		}
 		if (sqlFlag.equals(SQL_INSERT)) {
 			sql.append(" INSERT INTO "

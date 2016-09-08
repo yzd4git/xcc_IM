@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriBuilder;
 
+import com.alibaba.fastjson.JSON;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -48,35 +49,22 @@ public class Test {
 //		testGetGroupImg();
 //		testFind1();
 //		System.out.println(checkEmail("luoyj@136.cn"));
-		testIsRegiest();
+//		testIsRegiest();
+//		getVersion();
+//		getToken();
+//		RegiestUser();
+//		DoFriend();
+		sendMsg();
+//		getCode();
+//		Regiest();
 	}
 
 	private static URI getBaseURI() {
 		return UriBuilder.fromUri("http://localhost:8080/xcc_IM/IM/rest/").build();
 	}
+	
+	
 
-	public static void testUrl() {
-
-		ClientConfig clientConfig = new DefaultClientConfig();
-		clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING,
-				Boolean.TRUE);
-		Client c = Client.create(clientConfig);
-		String url = "http://localhost:8080/xcc_IM/IM/rest/remoteApi/login";
-		WebResource r = c.resource(url);
-		MultivaluedMap<String, String> param = new MultivaluedMapImpl();
-		param.add("userId", "10000");
-		param.add("userName", "脏话");
-		param.add("nickName", "脏话色狼");
-		Product p = new Product();
-		System.out.println(r.queryParams(param).type(MediaType.WILDCARD)
-				.post(String.class));
-		
-		System.out.println("状态码="
-				+ r.path("setUser")
-						.accept(new String[] { MediaType.APPLICATION_JSON })
-						.entity(p, MediaType.APPLICATION_JSON)
-						.post(String.class));
-	}
 	public static void testLogin() {
 
 		Client client = Client.create();
@@ -128,42 +116,6 @@ public class Test {
 	
 	
 	
-	public static void testbackApp() {
-		Client client = Client.create();
-		URI u = null;
-		try {
-			u = new URI("http://localhost:8080/xcc_IM/rest/remoteApi/backApp");
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-		System.out.println(u);
-		WebResource resource = client.resource(u);
-		MultivaluedMapImpl params = new MultivaluedMapImpl();
-
-		JSONArray jsonArray1 = new JSONArray();
-		JSONObject jo = new JSONObject();
-		jo.put("", "");
-		JSONObject jo1 = new JSONObject();
-		jo1.put("", "");
-		JSONObject jo2 = new JSONObject();
-		jo2.put("", "");
-		jsonArray1.add(jo);
-		jsonArray1.add(jo1);
-		jsonArray1.add(jo2);
-
-		JSONObject obj = new JSONObject();
-		obj.put("phone", "13120215658");
-		obj.put("code", "186860");
-		obj.put("passwdHash", "112233");
-		
-		String data = null;
-		data = Base64Util.encode(new String(obj.toString()));
-		obj.clear();
-		obj.put("data", data);
-		String result = resource.type(MediaType.APPLICATION_JSON).post(
-				String.class, obj.toString());
-		System.out.println(result);
-	}
 
 	
 	public static void testSetQuestion() {
@@ -185,112 +137,6 @@ public class Test {
 				String.class, obj.toString());
 		System.out.println(result);
 	}
-	
-	public static void alterPasswdByQues() {
-		Client client = Client.create();
-		URI u = null;
-		try {
-			u = new URI("http://localhost:8080/xcc_IM/rest/remoteApi/alterPasswdByQues");
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-		System.out.println(u);
-		WebResource resource = client.resource(u);
-		MultivaluedMapImpl params = new MultivaluedMapImpl();
-		JSONObject obj = new JSONObject();
-		obj.put("phone", "018558712241");
-		obj.put("question", "你猜猜我是谁");
-		obj.put("answer", "不猜不猜就不猜");
-		obj.put("passwd", "666666");
-		String result = resource.type(MediaType.APPLICATION_JSON).post(
-				String.class, obj.toString());
-		System.out.println(result);
-	}
-
-	public static void alterQuestion() {
-		Client client = Client.create();
-		URI u = null;
-		try {
-			u = new URI("http://localhost:8080/xcc_IM/rest/remoteApi/alterQuestion");
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-		System.out.println(u);
-		WebResource resource = client.resource(u);
-		MultivaluedMapImpl params = new MultivaluedMapImpl();
-		JSONObject obj = new JSONObject();
-		obj.put("id", "735fef7b-947c-4fc1-811c-539d30c83703");
-		obj.put("oldQuestion", "你是猪吗");
-		obj.put("oldAnswer", "猪，你的鼻子有两个孔~");
-		obj.put("newQuestion", "测试密保问题");
-		obj.put("newAnswer", "测试密保答案");
-		
-		String result = resource.type(MediaType.APPLICATION_JSON).post(
-				String.class, obj.toString());
-		System.out.println(result);
-	}
-	public static void testDeleteFriend(){
-		Client client = Client.create();
-		URI u = null;
-		try {
-			u = new URI("http://localhost:8080/xcc_IM/rest/remoteApi/deleteFriend");
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println(u);
-		WebResource resource = client.resource(u);
-		MultivaluedMapImpl params = new MultivaluedMapImpl();
-		JSONObject obj = new JSONObject();
-		obj.put("userId", "2412");
-		obj.put("friendId", "2222");
-		String result = resource.type(MediaType.APPLICATION_JSON).post(
-				String.class, obj.toString());
-		System.out.println(result);
-	}
-	
-	
-	public static void testClearFriends(){
-		Client client = Client.create();
-		URI u = null;
-		try {
-			u = new URI("http://localhost:8080/xcc_IM/rest/remoteApi/clearFriends");
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-		System.out.println(u);
-		WebResource resource = client.resource(u);
-		MultivaluedMapImpl params = new MultivaluedMapImpl();
-		JSONObject obj = new JSONObject();
-		obj.put("id", "2412");
-		//obj.put("friendId", "2222");
-		String result = resource.type(MediaType.APPLICATION_JSON).post(
-				String.class, obj.toString());
-		System.out.println(result);
-	}
-	
-	public static void testGainInfo() {
-		Client client = Client.create();
-		URI u = null;
-		try {
-			u = new URI("http://localhost:8080/xcc_IM/rest/remoteApi/gainInfo");
-			WebResource resource = client.resource(u);
-			MultivaluedMapImpl params = new MultivaluedMapImpl();
-			JSONObject obj = new JSONObject();
-			obj.put("id", "8f4f22f762e247fdb5f5cd8e5939a4b9");
-			obj.put("query", "4e28273851aa423e65c7ca31967da8d0");
-			String data = null;
-			data = Base64Util.encode(new String(obj.toString()));
-			obj.clear();
-			obj.put("data", data);
-
-			String result = resource.type(MediaType.APPLICATION_JSON).post(String.class, obj.toString());
-				System.out.println(result);
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	
 	public static void testUpdateInfo(){
 		Client client = Client.create();
@@ -637,4 +483,189 @@ public class Test {
 		System.out.println(result);
 	}
 	
+	
+	
+	public static void getVersion(){
+		Client client = Client.create();
+		URI u = null;
+		try {
+			u = new URI("http://localhost:8080/xcc_IM/rest/remoteApi/getVersion");
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		System.out.println(u);
+		WebResource resource = client.resource(u);
+		MultivaluedMapImpl params = new MultivaluedMapImpl();
+		JSONObject json = new JSONObject();
+		json.put("type", "0");
+		JSONObject obj = new JSONObject();
+		obj.put("data", Base64Util.encode(json.toString()));
+		String result = resource.type(MediaType.APPLICATION_JSON).post(
+				String.class, obj.toString());
+		System.out.println(result);
+	}
+	
+	
+	public static void getCode(){
+		Client client = Client.create();
+		URI u = null;
+		try {
+			u = new URI("http://localhost:8080/xcc_IM/rest/remoteApi/getVerifCode");
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		System.out.println(u);
+		WebResource resource = client.resource(u);
+		MultivaluedMapImpl params = new MultivaluedMapImpl();
+		JSONObject json = new JSONObject();
+		json.put("phone", "18510195274");
+		JSONObject obj = new JSONObject();
+		obj.put("data", Base64Util.encode(json.toString()));
+		String result = resource.type(MediaType.APPLICATION_JSON).post(
+				String.class, obj.toString());
+		System.out.println(result);
+	}
+	
+	
+	public static void Regiest(){
+		Client client = Client.create();
+		URI u = null;
+		try {
+			u = new URI("http://localhost:8080/xcc_IM/rest/remoteApi/register");
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		System.out.println(u);
+		WebResource resource = client.resource(u);
+		MultivaluedMapImpl params = new MultivaluedMapImpl();
+		JSONObject json = new JSONObject();
+		json.put("phone", "18510195274");
+		json.put("passwd", "123");
+		json.put("code", "238616");
+		json.put("salt", "123");
+		JSONObject obj = new JSONObject();
+		obj.put("data", Base64Util.encode(json.toString()));
+		String result = resource.type(MediaType.APPLICATION_JSON).post(
+				String.class, obj.toString());
+		System.out.println(result);
+	}
+	
+	
+	public static void getToken(){
+		Client client = Client.create();
+		URI u = null;
+		try {
+			u = new URI("http://a1.easemob.com/9111011755859790xy/demo/token");
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		System.out.println(u);
+		WebResource resource = client.resource(u);
+		MultivaluedMapImpl params = new MultivaluedMapImpl();
+		JSONObject obj = new JSONObject();
+		obj.put("grant_type", "client_credentials");
+		obj.put("client_id", "YXA61nUJAL5VEeWRGjmxKtAZGA");
+		obj.put("client_secret", "YXA6pUUuB21OW0RwMJLf7NdhJ7ZsXsM");
+		JSONObject header = new JSONObject();
+		header.put("Content-Type", "application/json");
+		// header.put("Authorization",
+		// "Bearer YWMtmgU3vr_1EeWskpM7dKETHwAAAVOXYn2r9gzNk8AuYJzoaIzpxtbZsbhw3qw")
+		// ;
+		String result = resource
+				.type(MediaType.APPLICATION_JSON)
+				.header("Content-Type", "application/json")
+				.post(String.class, obj.toString());
+		System.out.println(result);
+	}
+	
+	public static void RegiestUser(){
+		Client client = Client.create();
+		URI u = null;
+		try {
+			u = new URI("http://a1.easemob.com/9111011755859790xy/demo/users");
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		System.out.println(u);
+		WebResource resource = client.resource(u);
+		MultivaluedMapImpl params = new MultivaluedMapImpl();
+		JSONObject obj = new JSONObject();
+		obj.put("username", "1001");
+		obj.put("password", "5d180c53bf5608a9c2e3a5b0d064bd38");
+		JSONObject header = new JSONObject();
+		header.put("Content-Type", "application/json");
+		// header.put("Authorization",
+		// "Bearer YWMtmgU3vr_1EeWskpM7dKETHwAAAVOXYn2r9gzNk8AuYJzoaIzpxtbZsbhw3qw")
+		// ;
+		String result = resource
+				.type(MediaType.APPLICATION_JSON)
+				.header("Content-Type", "application/json")
+				.header("Authorization",
+						"Bearer ")
+				.post(String.class, obj.toString());
+		System.out.println(result);
+	}
+	
+	
+	public static void DoFriend(){
+		Client client = Client.create();
+		URI u = null;
+		try {
+			u = new URI("http://a1.easemob.com/9111011755859790xy/xccim/users/1001/contacts/users/4e28273851aa423e65c7ca31967da8d0");
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		System.out.println(u);
+		WebResource resource = client.resource(u);
+		MultivaluedMapImpl params = new MultivaluedMapImpl();
+		JSONObject obj = new JSONObject();
+//		obj.put("username", "1001");
+//		obj.put("password", "5d180c53bf5608a9c2e3a5b0d064bd38");
+		JSONObject header = new JSONObject();
+		header.put("Content-Type", "application/json");
+		// header.put("Authorization",
+		// "Bearer YWMtmgU3vr_1EeWskpM7dKETHwAAAVOXYn2r9gzNk8AuYJzoaIzpxtbZsbhw3qw")
+		// ;
+		String result = resource
+				.type(MediaType.APPLICATION_JSON)
+				.header("Content-Type", "application/json")
+				.header("Authorization",
+						"Bearer YWMtgW-UGHTdEeaWfIlWPamWJwAAAVg4-C9Kip1IrqmiPqcLdEeddgrzK3tpMkE")
+				.post(String.class, obj.toString());
+		System.out.println(result);
+	}
+	
+	
+	public static void sendMsg(){
+		Client client = Client.create();
+		URI u = null;
+		try {
+			u = new URI("http://a1.easemob.com/9111011755859790xy/demo/messages");
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		System.out.println(u);
+		WebResource resource = client.resource(u);
+		MultivaluedMapImpl params = new MultivaluedMapImpl();
+		JSONObject obj = new JSONObject();
+		obj.put("target_type", "users");
+//		obj.put("target", "[4e28273851aa423e65c7ca31967da8d0]");
+		String username = "4e28273851aa423e65c7ca31967da8d0";
+		obj.put("target", "[\""+username+"\"]");
+		JSONObject info = new JSONObject();
+		info.put("type", "txt");
+		info.put("msg", "Hello! My name is 小薇~           Nice to meet you! ");
+		obj.put("msg", info);
+		obj.put("from", "b8c37e33defde51cf91e1e03e51657da");
+		JSONObject header = new JSONObject();
+		
+		header.put("Content-Type", "application/json");
+		String result = resource
+				.type(MediaType.APPLICATION_JSON)
+				.header("Content-Type", "application/json")
+				.header("Authorization",
+						"Bearer YWMtHWpAjnVgEeayNjE5GcIX8gAAAVg8UCVTLBsIIi1R1j9s-gvHAa85fEduPPY")
+				.post(String.class, obj.toString());
+		System.out.println(result);
+	}
 }

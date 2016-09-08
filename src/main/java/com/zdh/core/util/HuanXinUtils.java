@@ -21,8 +21,10 @@ public class HuanXinUtils {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
+//		HuanXinUtils.sendMsg("cd74e7d7535858c3117a1b62a4e07bc2", "YWMtgMPxpnTQEeasHfeYxagMewAAAVg4oviEIQmDwCGWHDbH3ZRTZtv-HBR9vyE");
+//		System.out.println(testHUXINToken());
 	}
+	
 	
 	/**
 	 * 获取环信端的Token
@@ -144,9 +146,6 @@ public class HuanXinUtils {
 		}
 	}
 	
-	
-	
-	
 	/**
 	 * 禁用某个IM账户<暂时不用>
 	 * @param phone
@@ -232,5 +231,105 @@ public class HuanXinUtils {
 			jsonObject.put("success", "1");
 			return jsonObject;
 		}
+	}
+	
+	//=====================================================================================
+	
+	/**
+	 * 给好友发消息
+	 * @param username
+	 * @param token
+	 */
+	public static void sendMsg(String username,String token){
+		Client client = Client.create();
+		URI u = null;
+		try {
+			u = new URI("http://a1.easemob.com/9111011755859790xy/demo/messages");
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		System.out.println(u);
+		WebResource resource = client.resource(u);
+		MultivaluedMapImpl params = new MultivaluedMapImpl();
+		JSONObject obj = new JSONObject();
+		obj.put("target_type", "users");
+		String username1 = "995c83c4d54f5fbd7966a74f4c6ea58f";
+		obj.put("target", "[\""+username1+"\"]");
+		JSONObject info = new JSONObject();
+		info.put("type", "txt");
+		info.put("msg", "Hello!I'M your firend!");
+		obj.put("msg", info);
+		obj.put("from", "1001");
+		JSONObject header = new JSONObject();
+		
+		header.put("Content-Type", "application/json");
+		String result = resource
+				.type(MediaType.APPLICATION_JSON)
+				.header("Content-Type", "application/json")
+				.header("Authorization",
+						"Bearer YWMt677-EHTQEeatlmspGj9uEwAAAVg4pbWgDaTF4Mbesxz_iFuuZOHhAsQJ9N4")
+				.post(String.class, obj.toString());
+		System.out.println(result);
+	}
+	
+	/**
+	 * 添加管理员为好友
+	 * @param username
+	 * @param token
+	 */
+	public static void doFriend(String username,String token){
+		Client client = Client.create();
+		URI u = null;
+		try {
+//			u = new URI("http://a1.easemob.com/9111011755859790xy/xccim/users/1001/contacts/users/" + username);
+			u = new URI("http://a1.easemob.com/9111011755859790xy/demo/users/1001/contacts/users/" + username);
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		System.out.println(u);
+		WebResource resource = client.resource(u);
+		MultivaluedMapImpl params = new MultivaluedMapImpl();
+		JSONObject obj = new JSONObject();
+		JSONObject header = new JSONObject();
+		header.put("Content-Type", "application/json");
+		String result = resource
+				.type(MediaType.APPLICATION_JSON)
+				.header("Content-Type", "application/json")
+				.header("Authorization",
+						"Bearer " + token)
+				.post(String.class, obj.toString());
+	}
+	
+	public static void sendMsg(){
+		Client client = Client.create();
+		URI u = null;
+		try {
+			u = new URI("http://a1.easemob.com/9111011755859790xy/demo/messages");
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		System.out.println(u);
+		WebResource resource = client.resource(u);
+		MultivaluedMapImpl params = new MultivaluedMapImpl();
+		JSONObject obj = new JSONObject();
+		obj.put("target_type", "users");
+//		obj.put("target", "[4e28273851aa423e65c7ca31967da8d0]");
+		String username = "4e28273851aa423e65c7ca31967da8d0";
+		obj.put("target", "[\""+username+"\"]");
+		JSONObject info = new JSONObject();
+		info.put("type", "txt");
+		info.put("msg", "Hello!I'M your firend!");
+		obj.put("msg", info);
+		obj.put("from", "1001");
+		JSONObject header = new JSONObject();
+		
+		header.put("Content-Type", "application/json");
+		String result = resource
+				.type(MediaType.APPLICATION_JSON)
+				.header("Content-Type", "application/json")
+				.header("Authorization",
+						"Bearer YWMtpEe_xnTgEeaMn__QSNHYmgAAAVg5DLzQrhIvVxHIEBuUKPmyeGo6i6AuU28")
+				.post(String.class, obj.toString());
+		System.out.println(result);
 	}
 }

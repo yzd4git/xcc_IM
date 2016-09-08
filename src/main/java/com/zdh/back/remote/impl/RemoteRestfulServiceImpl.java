@@ -46,6 +46,7 @@ import com.zdh.core.util.AgeUtil;
 import com.zdh.core.util.Base64Util;
 import com.zdh.core.util.CheckPhoneCode;
 import com.zdh.core.util.Cn2Spell;
+import com.zdh.core.util.HuanXinSendMsgUtil;
 import com.zdh.core.util.HuanXinUtils;
 import com.zdh.core.util.JUHEMessageUtil;
 import com.zdh.core.util.MD5Util;
@@ -66,6 +67,29 @@ public class RemoteRestfulServiceImpl implements IRemoteRestfulService {
 	private FeedBackDao feedBackDao;
 	@Autowired
 	private HttpServletRequest request;
+	
+	@Path("getVersion")
+	@POST 
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Override
+	public String getVersion(String Info) throws UnsupportedEncodingException {
+		JSONObject InfoParam = JSON.parseObject(Info);
+		String infParam = InfoParam.getString("data");
+		JSONObject inf = JSON.parseObject(Base64Util.decode(infParam));
+		JSONObject obj = new JSONObject();
+		String type = inf.getString("type");
+		//SELECT * FROM t_app_version_info WHERE type = '0' ORDER BY time desc LIMIT 1
+		StringBuffer sql = new StringBuffer();
+		sql.append(" SELECT * FROM t_app_version_info WHERE type = '").append(type)
+			.append("' ORDER BY time desc LIMIT 1");
+		List<Map<String, Object>> version = userDao.queryForMapListBySql(sql.toString());
+		obj.put("version", version.get(0));
+		String data = Base64Util.encode(obj.toString());
+		obj.clear();
+		obj.put("data", data);
+		return obj.toString();
+	}
+	
 	
 	@Path("isRegister")
 	@POST 
@@ -1272,7 +1296,11 @@ public class RemoteRestfulServiceImpl implements IRemoteRestfulService {
 									StringBuffer deleteSql = new StringBuffer();
 									deleteSql.append(" UPDATE t_app_verfication_code SET verification_code = '' WHERE phone = ").append(phone);
 									userDao.executeBySql(deleteSql.toString());
-									obj.put("success", "1");// 注册成功
+									//用户注册成功之后添加好友
+									HuanXinUtils.doFriend(IMphone, tokenObject);
+									//添加好友之后给他发个消息
+									HuanXinSendMsgUtil.sendMsg(IMphone, tokenObject);
+									obj.put("success", "1");
 								} else {
 									obj.put("success", "2");// 注册失败
 								}
@@ -1283,7 +1311,7 @@ public class RemoteRestfulServiceImpl implements IRemoteRestfulService {
 							obj.put("success", "2");// 注册失败
 						}
 					} catch (Exception e) {
-						obj.put("success", "2");//系统发生位置的错误
+						e.printStackTrace();
 					}
 				} else {
 					obj.put("success", "3");// 用户已注册

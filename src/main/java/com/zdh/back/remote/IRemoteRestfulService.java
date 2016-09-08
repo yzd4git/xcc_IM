@@ -13,6 +13,13 @@ import com.sun.jersey.multipart.FormDataParam;
 public interface IRemoteRestfulService {
 
 	
+	/**
+	 * 获取版本号
+	 * @param Info
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	public String getVersion(String Info) throws UnsupportedEncodingException;
 	
 	/**
 	 * 查看手机通讯录的所有人是否注册
