@@ -1,0 +1,181 @@
+package com.zdh.back.remote;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.UriBuilder;
+
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
+
+import net.sf.json.JSONObject;
+
+import com.alibaba.fastjson.parser.JSONScanner;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
+import com.zdh.core.base.test.domain.Product;
+
+public class Test {
+	public static void main(String[] args) {
+		ClientConfig config = new DefaultClientConfig();
+		Client client = Client.create(config);
+		WebResource service = client.resource(getBaseURI());
+		// Fluent interfaces
+		// System.out.println(service.path("remoteApi").path("login").accept(MediaType.TEXT_PLAIN).get(ClientResponse.class).toString());
+		// // Get plain text
+		// System.out.println(service.path("remoteApi").path("login").accept(MediaType.TEXT_PLAIN).get(String.class));
+		// // Get XML
+		// System.out.println(service.path("remoteApi").path("login").accept(MediaType.TEXT_XML).get(String.class));
+		// // The HTML
+		// System.out.println(service.path("remoteApi").path("login").accept(MediaType.TEXT_HTML).get(String.class));
+		// System.out.println(service.path("remoteApi").path("login").accept(MediaType.APPLICATION_JSON).get(String.class));
+		// testUrl();
+		// testLogin() ;
+		 //testHUXINToken() ;
+		testHUXINRegister();
+		//testJPUSH() ;
+	}
+
+	private static URI getBaseURI() {
+		return UriBuilder.fromUri("http://localhost:8080/IM/rest/").build();
+	}
+
+	public static void testUrl() {
+
+		ClientConfig clientConfig = new DefaultClientConfig();
+		clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING,
+				Boolean.TRUE);
+		Client c = Client.create(clientConfig);
+		String url = "http://localhost:8080/IM/rest/remoteApi/login";
+		WebResource r = c.resource(url);
+		MultivaluedMap<String, String> param = new MultivaluedMapImpl();
+		param.add("userId", "10000");
+		param.add("userName", "脏话");
+		param.add("nickName", "脏话色狼");
+		Product p = new Product();
+		System.out.println(r.queryParams(param).type(MediaType.WILDCARD)
+				.post(String.class));
+		System.out.println("状态码="
+				+ r.path("setUser")
+						.accept(new String[] { MediaType.APPLICATION_JSON })
+						.entity(p, MediaType.APPLICATION_JSON)
+						.post(String.class));
+	}
+
+	public static void testLogin() {
+
+		Client client = Client.create();
+		URI u = null;
+		try {
+			u = new URI("http://localhost:8080/IM/rest/remoteApi/login");
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(u);
+		WebResource resource = client.resource(u);
+		MultivaluedMapImpl params = new MultivaluedMapImpl();
+		// params.add("userId", "10000");
+		// params.add("userName", "脏话");
+		// params.add("nickName", "脏话色狼");
+		JSONObject obj = new JSONObject();
+		obj.put("username", "dadaaa");
+		String result = resource.type(MediaType.APPLICATION_JSON).post(
+				String.class, obj.toString());
+		System.out.println(result);
+	}
+
+	public static void testHUXINToken() {
+
+		Client client = Client.create();
+		URI u = null;
+		try {
+			u = new URI("http://a1.easemob.com/9111011755859790xy/xccim/token");
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(u);
+		WebResource resource = client.resource(u);
+		MultivaluedMapImpl params = new MultivaluedMapImpl();
+
+		JSONObject obj = new JSONObject();
+		obj.put("grant_type", "client_credentials");
+		obj.put("client_id", "YXA6RFVXsL_zEeWolFH5UG0brw");
+		obj.put("client_secret", "YXA6dWxNVCSGAo7-OFQb-uz2yrYqMgU");
+		String result = resource.type(MediaType.APPLICATION_JSON).post(
+				String.class, obj.toString());
+		System.out.println(result);
+
+	}
+
+	public static void testHUXINRegister() {
+
+		Client client = Client.create();
+		URI u = null;
+		try {
+			u = new URI("http://a1.easemob.com/9111011755859790xy/xccim/users");
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(u);
+		WebResource resource = client.resource(u);
+		MultivaluedMapImpl params = new MultivaluedMapImpl();
+		JSONObject obj = new JSONObject();
+		obj.put("username", "jliu");
+		obj.put("password", "123456");
+		JSONObject header = new JSONObject();
+		header.put("Content-Type", "application/json");
+		// header.put("Authorization",
+		// "Bearer YWMtmgU3vr_1EeWskpM7dKETHwAAAVOXYn2r9gzNk8AuYJzoaIzpxtbZsbhw3qw")
+		// ;
+		String result = resource
+				.type(MediaType.APPLICATION_JSON)
+				.header("Content-Type", "application/json")
+				.header("Authorization",
+						"Bearer YWMt3mN9kMAmEeWmA4GNRvYXjQAAAVOYpV4WnSg6bTxsava5Dq3_2uNgepUkSfI")
+				.post(String.class, obj.toString());
+		System.out.println(result);
+
+	}
+	
+	public static void testJPUSH() {
+
+		Client client = Client.create();
+		URI u = null;
+		try {
+			u = new URI("http://api.jpush.cn/v3/push");
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(u);
+		WebResource resource = client.resource(u);
+		MultivaluedMapImpl params = new MultivaluedMapImpl();
+		
+		
+		JSONObject header = new JSONObject();
+		header.put("Content-Type", "application/json");
+		// header.put("Authorization",
+		// "Bearer YWMtmgU3vr_1EeWskpM7dKETHwAAAVOXYn2r9gzNk8AuYJzoaIzpxtbZsbhw3qw")
+		// ;
+		String sss = "{\"platform\": \"all\",\"audience\" : \"all\",\"notification\" : {\"alert\" : \"Hi, JPush!\",\"android\" : {},\"ios\" : {\"extras\" : { \"newsid\" : 321}}}}" ;
+		String encode = new BASE64Encoder().encode("c8feaad5506121faad7c55fc:8d3771d20923d800ae9eeaf9".getBytes()) ;
+		JSONObject obj = JSONObject.fromObject(sss) ;
+		String result = resource
+				.type(MediaType.APPLICATION_JSON)
+				.header("Content-Type", "application/json")
+				.header("Authorization","Basic " + encode)
+				.post(String.class, obj.toString());
+		System.out.println(result);
+
+	}
+
+}

@@ -7,6 +7,7 @@
           <string>WEB-INF/classes/.gitignore</string>
           <string>WEB-INF/classes/applicationContext.xml</string>
           <string>WEB-INF/classes/com/zdh/back/App.class</string>
+          <string>WEB-INF/classes/com/zdh/back/controller/UpLoadIMGController.class</string>
           <string>WEB-INF/classes/com/zdh/back/dao/FeedBackDao.class</string>
           <string>WEB-INF/classes/com/zdh/back/dao/impl/FeedBackDaoImpl.class</string>
           <string>WEB-INF/classes/com/zdh/back/dao/impl/UserDaoImpl.class</string>
@@ -38,6 +39,7 @@
           <string>WEB-INF/classes/com/zdh/core/redis/impl/RedisServiceImpl.class</string>
           <string>WEB-INF/classes/com/zdh/core/redis/IRedisService.class</string>
           <string>WEB-INF/classes/com/zdh/core/util/AESUtil.class</string>
+          <string>WEB-INF/classes/com/zdh/core/util/AESUtils.class</string>
           <string>WEB-INF/classes/com/zdh/core/util/AgeUtil.class</string>
           <string>WEB-INF/classes/com/zdh/core/util/Base64Util.class</string>
           <string>WEB-INF/classes/com/zdh/core/util/CheckPhoneCode.class</string>
@@ -49,6 +51,7 @@
           <string>WEB-INF/classes/com/zdh/core/util/EncrypRSA.class</string>
           <string>WEB-INF/classes/com/zdh/core/util/EncrypSHA.class</string>
           <string>WEB-INF/classes/com/zdh/core/util/EnvConfigReader.class</string>
+          <string>WEB-INF/classes/com/zdh/core/util/HuanXinSendMsgUtil.class</string>
           <string>WEB-INF/classes/com/zdh/core/util/HuanXinUtils.class</string>
           <string>WEB-INF/classes/com/zdh/core/util/JsonDateValueProcessor.class</string>
           <string>WEB-INF/classes/com/zdh/core/util/JSONStringObject.class</string>
@@ -69,6 +72,7 @@
           <string>WEB-INF/classes/redis.properties</string>
           <string>WEB-INF/classes/xcc_IM/excel/CreateSimpleExcelToDisk.class</string>
           <string>WEB-INF/classes/xcc_IM/excel/Student.class</string>
+          <string>WEB-INF/classes/xcc_IM/FileToString.class</string>
           <string>WEB-INF/classes/xcc_IM/Test6.class</string>
           <string>WEB-INF/classes/xcc_IM/TestJson.class</string>
           <string>WEB-INF/classes/xcc_IM/TestLog.class</string>
@@ -123,7 +127,7 @@
           <string>WEB-INF/lib/ezmorph-1.0.6.jar</string>
           <string>WEB-INF/lib/jersey-spring-1.8.jar</string>
           <string>WEB-INF/lib/pinyin4j-2.5.0.jar</string>
-          <string>WEB-INF/lib/qiniu-java-sdk-7.0.10.jar</string>
+          <string>WEB-INF/lib/qiniu-java-sdk-7.0.11.jar</string>
           <string>WEB-INF/lib/gson-2.3.1.jar</string>
           <string>WEB-INF/lib/okhttp-2.7.1.jar</string>
           <string>WEB-INF/lib/okio-1.6.0.jar</string>

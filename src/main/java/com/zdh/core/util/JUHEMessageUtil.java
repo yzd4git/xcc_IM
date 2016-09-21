@@ -137,7 +137,9 @@ public class JUHEMessageUtil {
     }
     
     public static void main(String[] args) {
-    	sendVerifyCodeMsg("13716359130" , "15612" , "#code#=431515&#app#=IM",null) ;
+    		//13723
+    		//13972
+    	sendVerifyCodeMsg("18653448926" , "13723" , "#code#=111111&#app#=IM",null) ;
     }
  
     

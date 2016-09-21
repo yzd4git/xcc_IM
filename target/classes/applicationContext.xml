@@ -81,7 +81,9 @@
  	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
 		<property name="maxUploadSize" value="50000000" />  
 	</bean>
-	<mvc:resources mapping="/upload/**" location="/upload/" />
+	<mvc:resources mapping="/test/**" location="/test/" />
+	<mvc:resources mapping="/js/**" location="/js/" />
+	<mvc:resources mapping="/img/**" location="/img/" />
 	<!-- 通过AOP配置提供事务增强，让service包下所有Bean的所有方法拥有事务 -->
 	<aop:config proxy-target-class="true">
 		<aop:pointcut id="serviceMethod"

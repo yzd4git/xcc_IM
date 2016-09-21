@@ -35,7 +35,7 @@ public class HuanXinSendMsgUtil {
 		info.put("type", "txt");
 		info.put("msg", "Hello! My name is 小薇~           Nice to meet you! ");
 		obj.put("msg", info);
-		obj.put("from", "1001");
+		obj.put("from", "b8c37e33defde51cf91e1e03e51657da");
 		JSONObject header = new JSONObject();
 		
 		header.put("Content-Type", "application/json");

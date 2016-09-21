@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -30,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -42,6 +44,7 @@ import com.zdh.back.entities.AppFeedback;
 import com.zdh.back.entities.AppUserInfo;
 import com.zdh.back.remote.IRemoteRestfulService;
 import com.zdh.core.base.util.QueryResult;
+import com.zdh.core.redis.impl.RedisServiceImpl;
 import com.zdh.core.util.AgeUtil;
 import com.zdh.core.util.Base64Util;
 import com.zdh.core.util.CheckPhoneCode;
@@ -53,6 +56,8 @@ import com.zdh.core.util.MD5Util;
 import com.zdh.core.util.MyStringUtil;
 import com.zdh.core.util.RegexUtils;
 import com.zdh.core.util.TextUtils;
+
+import xcc_IM.FileUtils;
 
 @Component
 @Scope("request")
@@ -67,6 +72,20 @@ public class RemoteRestfulServiceImpl implements IRemoteRestfulService {
 	private FeedBackDao feedBackDao;
 	@Autowired
 	private HttpServletRequest request;
+	@Resource(name = "redisService")
+	private RedisServiceImpl redis; 
+	
+	@Path("test")
+	@POST 
+	@Produces({ MediaType.APPLICATION_JSON })
+	public String testString(String Info) throws IOException {
+		byte[] byteArray = FileUtils.toByteArray("C:\\Users\\yzd\\Desktop\\vkd\\iwall09.vkd");
+		String encodeToString = Base64Utils.encodeToString(byteArray);
+		JSONObject json = new JSONObject();
+		json.put("test", encodeToString);
+		return json.toString();
+	}
+	
 	
 	@Path("getVersion")
 	@POST 
@@ -440,6 +459,7 @@ public class RemoteRestfulServiceImpl implements IRemoteRestfulService {
 		JSONObject inf = JSON.parseObject(Base64Util.decode(infParam));
 		JSONObject obj = new JSONObject();
 		String phone = (String) inf.get("phone");
+		redis.set("phone", phone,300);
 		StringBuffer sql = new StringBuffer();
 		sql.append(" SELECT COUNT(0) FROM t_app_user_info WHERE phone = ").append(phone);
 		Integer status = userDao.queryForInt(sql.toString());

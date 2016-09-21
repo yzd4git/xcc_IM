@@ -1,0 +1,78 @@
+10
+
+dir
+3239
+svn://192.168.1.139/project/xcc_IM/src/main/java/com/zdh/back
+svn://192.168.1.139/project
+
+
+
+2016-01-21T12:22:23.457272Z
+2977
+zhangdahui
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+2bac0d02-acc4-4df2-98a5-75b8c3f1be05
+
+App.java
+file
+
+
+
+
+2016-01-25T09:56:19.095000Z
+4d8f4ce996f1ee70fef5341ae700c47c
+2016-01-18T20:13:32.335192Z
+2855
+zhangdahui
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+175
+
+dao
+dir
+
+entities
+dir
+
+
+
+add
+
+remote
+dir
+
+test
+dir
+

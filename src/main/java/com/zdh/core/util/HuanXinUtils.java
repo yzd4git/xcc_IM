@@ -23,6 +23,7 @@ public class HuanXinUtils {
 	public static void main(String[] args) {
 //		HuanXinUtils.sendMsg("cd74e7d7535858c3117a1b62a4e07bc2", "YWMtgMPxpnTQEeasHfeYxagMewAAAVg4oviEIQmDwCGWHDbH3ZRTZtv-HBR9vyE");
 //		System.out.println(testHUXINToken());
+		doFriend("8dbe1f26a33a373e1a9c2b562f32fbb4", "YWMtt_5yJnWUEea_Xrv3lgz00wAAAVg9qOPl0zK0kKSYlyBJnebbFSUbgz7RnLw");
 	}
 	
 	
@@ -282,7 +283,7 @@ public class HuanXinUtils {
 		URI u = null;
 		try {
 //			u = new URI("http://a1.easemob.com/9111011755859790xy/xccim/users/1001/contacts/users/" + username);
-			u = new URI("http://a1.easemob.com/9111011755859790xy/demo/users/1001/contacts/users/" + username);
+			u = new URI("http://a1.easemob.com/9111011755859790xy/demo/users/b8c37e33defde51cf91e1e03e51657da/contacts/users/" + username);
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}

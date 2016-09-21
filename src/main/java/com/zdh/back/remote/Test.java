@@ -38,7 +38,7 @@ public class Test {
 		// System.out.println(service.path("remoteApi").path("login").accept(MediaType.TEXT_HTML).get(String.class));
 		// System.out.println(service.path("remoteApi").path("login").accept(MediaType.APPLICATION_JSON).get(String.class));
 		// testUrl();
-		// testLogin() ;
+//		 testLogin() ;
 		 //testHUXINToken() ;
 //		testHUXINRegister();
 		//testJPUSH() ;
@@ -54,7 +54,7 @@ public class Test {
 //		getToken();
 //		RegiestUser();
 //		DoFriend();
-		sendMsg();
+//		sendMsg();
 //		getCode();
 //		Regiest();
 	}
@@ -388,7 +388,7 @@ public class Test {
 		Client client = Client.create();
 		URI u = null;
 		try {
-			u = new URI("http://localhost:8080/xcc_IM/rest/remoteApi/gainInfo");
+			u = new URI("http://localhost:8080/xcc_IM/rest/remoteApi/getSalt");
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
@@ -396,7 +396,7 @@ public class Test {
 		WebResource resource = client.resource(u);
 		MultivaluedMapImpl params = new MultivaluedMapImpl();
 		JSONObject json = new JSONObject();
-		json.put("id", "9e2867afd057427eb51551dc28de9d");
+		json.put("phone", "18510195274");
 		JSONObject obj = new JSONObject();
 		obj.put("data", Base64Util.encode(json.toString()));
 		String result = resource.type(MediaType.APPLICATION_JSON).post(
@@ -518,7 +518,7 @@ public class Test {
 		WebResource resource = client.resource(u);
 		MultivaluedMapImpl params = new MultivaluedMapImpl();
 		JSONObject json = new JSONObject();
-		json.put("phone", "18510195274");
+		json.put("phone", "18653448926");
 		JSONObject obj = new JSONObject();
 		obj.put("data", Base64Util.encode(json.toString()));
 		String result = resource.type(MediaType.APPLICATION_JSON).post(
@@ -541,7 +541,7 @@ public class Test {
 		JSONObject json = new JSONObject();
 		json.put("phone", "18510195274");
 		json.put("passwd", "123");
-		json.put("code", "238616");
+		json.put("code", "444452");
 		json.put("salt", "123");
 		JSONObject obj = new JSONObject();
 		obj.put("data", Base64Util.encode(json.toString()));

@@ -16,6 +16,7 @@ E:\Iwall\xcc_IM\src\main\java\com\zdh\core\base\util\QueryResult.java
 E:\Iwall\xcc_IM\src\main\java\com\zdh\core\util\TextUtils.java
 E:\Iwall\xcc_IM\src\main\java\com\zdh\back\App.java
 E:\Iwall\xcc_IM\src\main\java\com\zdh\core\base\test\dao\IProductDao.java
+E:\Iwall\xcc_IM\src\main\java\com\zdh\core\util\AESUtils.java
 E:\Iwall\xcc_IM\src\main\java\com\zdh\core\base\test\service\impl\ProductServiceImpl.java
 E:\Iwall\xcc_IM\src\main\java\com\zdh\core\util\TableNameConvertUtil.java
 E:\Iwall\xcc_IM\src\main\java\com\zdh\core\base\test\dao\impl\ProductDaoImpl.java
@@ -24,6 +25,7 @@ E:\Iwall\xcc_IM\src\main\java\com\zdh\back\remote\IRemoteRestfulService.java
 E:\Iwall\xcc_IM\src\main\java\com\zdh\back\remote\Test.java
 E:\Iwall\xcc_IM\src\main\java\com\zdh\core\util\Base64Util.java
 E:\Iwall\xcc_IM\src\main\java\com\zdh\core\util\JsonUtil.java
+E:\Iwall\xcc_IM\src\main\java\com\zdh\back\controller\UpLoadIMGController.java
 E:\Iwall\xcc_IM\src\main\java\com\zdh\core\util\DeleteFileUtil.java
 E:\Iwall\xcc_IM\src\main\java\com\zdh\core\util\JUHEMessageUtil.java
 E:\Iwall\xcc_IM\src\main\java\com\zdh\core\util\CommonStringUtils.java
@@ -42,6 +44,7 @@ E:\Iwall\xcc_IM\src\main\java\com\zdh\core\base\dao\impl\BaseDaoImpl.java
 E:\Iwall\xcc_IM\src\main\java\com\zdh\core\util\Cn2Spell.java
 E:\Iwall\xcc_IM\src\main\java\com\zdh\core\util\HuanXinUtils.java
 E:\Iwall\xcc_IM\src\main\java\com\zdh\core\util\DateJsonValueProcessor.java
+E:\Iwall\xcc_IM\src\main\java\com\zdh\core\util\HuanXinSendMsgUtil.java
 E:\Iwall\xcc_IM\src\main\java\com\zdh\core\util\QiNiu.java
 E:\Iwall\xcc_IM\src\main\java\com\zdh\core\util\EncrypRSA.java
 E:\Iwall\xcc_IM\src\main\java\com\zdh\core\util\WebUtils.java

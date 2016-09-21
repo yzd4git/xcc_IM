@@ -1,10 +1,15 @@
 package xcc_IM;
 
 import java.net.InetAddress;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Test6 {
 
 	public static void main(String[] args) {
+		Map<String,Object> map = new HashMap<>();		
+		
+		
 		// TODO Auto-generated method stub
 		InetAddress ia=null;
 		try {

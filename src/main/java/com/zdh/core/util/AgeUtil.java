@@ -6,6 +6,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class AgeUtil {
+	
+	private AgeUtil(){
+		throw new AssertionError();
+	}
+	
 	public static void main(String[] args) throws Exception {
 		String Sdate = "1994-10-10";
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
